@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lea.proj.dao.RefundMapper" >
+  <resultMap id="BaseResultMap" type="com.lea.proj.model.Refund" >
+    <constructor >
+      <idArg column="order_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="payment_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="correspond_order_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="buyer_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bank_refund_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="refund_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="refund_payment_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="refund_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, payment_type, correspond_order_id, shop_name, buyer_name, bank_refund_id, 
+    refund_price, refund_payment_time, refund_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lea.proj.model.RefundExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_refund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_refund
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_refund
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lea.proj.model.RefundExample" >
+    delete from tb_refund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lea.proj.model.Refund" >
+    insert into tb_refund (order_id, payment_type, correspond_order_id, 
+      shop_name, buyer_name, bank_refund_id, 
+      refund_price, refund_payment_time, refund_status
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{paymentType,jdbcType=VARCHAR}, #{correspondOrderId,jdbcType=BIGINT}, 
+      #{shopName,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, #{bankRefundId,jdbcType=VARCHAR}, 
+      #{refundPrice,jdbcType=DECIMAL}, #{refundPaymentTime,jdbcType=TIMESTAMP}, #{refundStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lea.proj.model.Refund" >
+    insert into tb_refund
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="paymentType != null" >
+        payment_type,
+      </if>
+      <if test="correspondOrderId != null" >
+        correspond_order_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="buyerName != null" >
+        buyer_name,
+      </if>
+      <if test="bankRefundId != null" >
+        bank_refund_id,
+      </if>
+      <if test="refundPrice != null" >
+        refund_price,
+      </if>
+      <if test="refundPaymentTime != null" >
+        refund_payment_time,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentType != null" >
+        #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="correspondOrderId != null" >
+        #{correspondOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankRefundId != null" >
+        #{bankRefundId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundPrice != null" >
+        #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="refundPaymentTime != null" >
+        #{refundPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lea.proj.model.RefundExample" resultType="java.lang.Integer" >
+    select count(*) from tb_refund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_refund
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentType != null" >
+        payment_type = #{record.paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.correspondOrderId != null" >
+        correspond_order_id = #{record.correspondOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyerName != null" >
+        buyer_name = #{record.buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankRefundId != null" >
+        bank_refund_id = #{record.bankRefundId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.refundPrice != null" >
+        refund_price = #{record.refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundPaymentTime != null" >
+        refund_payment_time = #{record.refundPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.refundStatus != null" >
+        refund_status = #{record.refundStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_refund
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      payment_type = #{record.paymentType,jdbcType=VARCHAR},
+      correspond_order_id = #{record.correspondOrderId,jdbcType=BIGINT},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      buyer_name = #{record.buyerName,jdbcType=VARCHAR},
+      bank_refund_id = #{record.bankRefundId,jdbcType=VARCHAR},
+      refund_price = #{record.refundPrice,jdbcType=DECIMAL},
+      refund_payment_time = #{record.refundPaymentTime,jdbcType=TIMESTAMP},
+      refund_status = #{record.refundStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lea.proj.model.Refund" >
+    update tb_refund
+    <set >
+      <if test="paymentType != null" >
+        payment_type = #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="correspondOrderId != null" >
+        correspond_order_id = #{correspondOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerName != null" >
+        buyer_name = #{buyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankRefundId != null" >
+        bank_refund_id = #{bankRefundId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundPrice != null" >
+        refund_price = #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="refundPaymentTime != null" >
+        refund_payment_time = #{refundPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lea.proj.model.Refund" >
+    update tb_refund
+    set payment_type = #{paymentType,jdbcType=VARCHAR},
+      correspond_order_id = #{correspondOrderId,jdbcType=BIGINT},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      buyer_name = #{buyerName,jdbcType=VARCHAR},
+      bank_refund_id = #{bankRefundId,jdbcType=VARCHAR},
+      refund_price = #{refundPrice,jdbcType=DECIMAL},
+      refund_payment_time = #{refundPaymentTime,jdbcType=TIMESTAMP},
+      refund_status = #{refundStatus,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <insert id="saveOrUpdate" parameterType="com.lea.proj.model.Refund">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(1) from tb_refund where order_id = #{orderId,jdbcType=BIGINT}
+    </selectKey>
+    <if test="count > 0">
+      update tb_refund
+      set payment_type = #{paymentType,jdbcType=VARCHAR},
+      correspond_order_id = #{correspondOrderId,jdbcType=BIGINT},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      buyer_name = #{buyerName,jdbcType=VARCHAR},
+      bank_refund_id = #{bankRefundId,jdbcType=VARCHAR},
+      refund_price = #{refundPrice,jdbcType=DECIMAL},
+      refund_payment_time = #{refundPaymentTime,jdbcType=TIMESTAMP},
+      refund_status = #{refundStatus,jdbcType=VARCHAR}
+      where order_id = #{orderId,jdbcType=BIGINT}
+    </if>
+    <if test="count==0">
+      insert into tb_refund (order_id, payment_type, correspond_order_id,
+      shop_name, buyer_name, bank_refund_id,
+      refund_price, refund_payment_time, refund_status
+      )
+      values (#{orderId,jdbcType=BIGINT}, #{paymentType,jdbcType=VARCHAR}, #{correspondOrderId,jdbcType=BIGINT},
+      #{shopName,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, #{bankRefundId,jdbcType=VARCHAR},
+      #{refundPrice,jdbcType=DECIMAL}, #{refundPaymentTime,jdbcType=TIMESTAMP}, #{refundStatus,jdbcType=VARCHAR}
+      )
+    </if>
+  </insert>
+  <select id="getAllOrderId" resultType="string">
+    select order_id from tb_refund
+  </select>
+  <select id="selectByConditions" parameterType="com.lea.proj.model.common.ConditionVo" resultMap="BaseResultMap">
+    select * from tb_refund
+    <where>
+      <if test="id != null and id != ''">
+        and order_id = #{id}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and refund_payment_time <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and refund_payment_time <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    order by refund_payment_time desc
+  </select>
+</mapper>

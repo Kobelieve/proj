@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LEA</title>
+    <!--jquery-->
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <!--bootstrap-->
+    <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <!--bootstrapTable-->
+    <script type="text/javascript" src="bootstrap/bootstrapTable/bootstrap-table.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/bootstrapTable/bootstrap-table.min.css">
+    <script type="text/javascript" src="bootstrap/bootstrapTable/bootstrap-table-zh-CN.js"></script>
+    <!--select2-->
+    <link href="select2/select2.min.css" rel="stylesheet">
+    <script type="text/javascript" src="select2/select2.min.js"></script>
+    <!--jedate-->
+    <script type="text/javascript" src="jedate/jedate.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">LEA</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav" id="titleList">
+                    <li class="active">
+                        <a href="#" onclick="initBootstrapTable('/payment/', 1)">支付列表</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="initBootstrapTable('/refund/', 2)">退款列表</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="initBootstrapTable('/cost/', 3)">费用列表</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="initBootstrapTable('/settlement/', 4)">结算列表</a>
+                    </li>
+<!--                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            操作
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">导入</a></li>
+                            <li><a href="#">导出</a></li>
+                        </ul>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <span id="idText">订单编号</span>：<select id="area" class="select2" style="width: 10%"></select>&nbsp;&nbsp;&nbsp;
+        <span id="startTime">支付时间</span>：<input type="text" style="width: 10%;display: inline" class="form-control input-medium" placeholder="开始时间" name="" id="beginTime1" />&nbsp;&nbsp;&nbsp;
+        <span id="endTime">支付时间</span>：<input  type="text" style="width: 10%;display: inline" class="form-control input-medium" placeholder="结束时间" name="" id="endTime1" />&nbsp;&nbsp;&nbsp;
+        <span id="finishedStart">订单完成时间：<input type="text" style="width: 10%;display: inline" class="form-control input-medium" placeholder="开始时间" name="" id="startTime2" />&nbsp;&nbsp;&nbsp;</span>
+        <span id="finishedEnd">订单完成时间：<input type="text" style="width: 10%;display: inline" class="form-control input-medium" placeholder="结束时间" name="" id="endTime2" />&nbsp;&nbsp;&nbsp;</span>
+        <button class="btn btn-primary" id="queryData">查询</button>
+        <!--<button class="btn btn-primary" id="test">测试</button>-->
+    </div>
+    <div>
+        <div id="toolbar">
+            <div class="btn-group">
+                <button onclick="refresh()" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-refresh">刷新</span>
+                </button>
+                <button id="import" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-import">导入</span>
+                </button>
+                <button id="export" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-export">导出</span>
+                </button>
+            </div>
+            <!--<input class="form-control" type="text" placeholder="订单编号搜索">-->
+        </div>
+    </div>
+    <div>
+        <table id="tb"></table>
+    </div>
+
+    <!--导出modal-->
+    <div class="modal fade" id="confirmModel">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    您确认要导出吗？
+                </div>
+                <div class="modal-footer">
+                    <!--<input type="hidden" id="url"/>-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a onclick="exportConfirm()" class="btn btn-primary" data-dismiss="modal">确定</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--导入modal-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="importModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">导入excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <!--<form action="/user/importExcel" method="POST" enctype="multipart/form-data" target="nm_iframe" >
+                            <input type="file" name="file"/>
+                        </form>
+                        <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>-->
+                        <input type="file" name="file" id="excelImp">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a onclick="importConfirm()" class="btn btn-primary" data-dismiss="modal">导入</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id='modal_message' style="text-align: center"><h1>正在导入中.....</h1></div>
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60"
+                             aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            <span class="sr-only">100% 完成</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 提示 -->
+    <div class="modal fade" id="alertText">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 id="typeNameMes" align="center"></h4>
+                </div>
+                <div class="modal-footer">
+                    <!--<input type="hidden" id="url"/>-->
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- 删除提示 -->
+    <div class="modal fade" id="delAlert">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 id="delText" align="center"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="comfirmDel" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script type="text/javascript" src="js/tableColumns.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+    <script type="text/javascript" src="js/excel.html.js"></script>
+</body>
+</html>

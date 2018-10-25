@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lea.proj.dao.CostMapper" >
+  <resultMap id="BaseResultMap" type="com.lea.proj.model.Cost" >
+    <constructor >
+      <idArg column="order_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="payment_channel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_payment_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="order_completion_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="platform_allowance_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="platform_trading_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, payment_channel, shop_name, order_payment_time, order_completion_time, 
+    platform_allowance_price, platform_trading_fee, total_cost
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lea.proj.model.CostExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_cost
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_cost
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lea.proj.model.CostExample" >
+    delete from tb_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lea.proj.model.Cost" >
+    insert into tb_cost (order_id, payment_channel, shop_name, 
+      order_payment_time, order_completion_time, 
+      platform_allowance_price, platform_trading_fee, 
+      total_cost)
+    values (#{orderId,jdbcType=BIGINT}, #{paymentChannel,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{orderPaymentTime,jdbcType=TIMESTAMP}, #{orderCompletionTime,jdbcType=TIMESTAMP}, 
+      #{platformAllowancePrice,jdbcType=DECIMAL}, #{platformTradingFee,jdbcType=DECIMAL}, 
+      #{totalCost,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lea.proj.model.Cost" >
+    insert into tb_cost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="paymentChannel != null" >
+        payment_channel,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="orderPaymentTime != null" >
+        order_payment_time,
+      </if>
+      <if test="orderCompletionTime != null" >
+        order_completion_time,
+      </if>
+      <if test="platformAllowancePrice != null" >
+        platform_allowance_price,
+      </if>
+      <if test="platformTradingFee != null" >
+        platform_trading_fee,
+      </if>
+      <if test="totalCost != null" >
+        total_cost,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentChannel != null" >
+        #{paymentChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPaymentTime != null" >
+        #{orderPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCompletionTime != null" >
+        #{orderCompletionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformAllowancePrice != null" >
+        #{platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="platformTradingFee != null" >
+        #{platformTradingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCost != null" >
+        #{totalCost,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lea.proj.model.CostExample" resultType="java.lang.Integer" >
+    select count(*) from tb_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_cost
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentChannel != null" >
+        payment_channel = #{record.paymentChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderPaymentTime != null" >
+        order_payment_time = #{record.orderPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderCompletionTime != null" >
+        order_completion_time = #{record.orderCompletionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.platformAllowancePrice != null" >
+        platform_allowance_price = #{record.platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.platformTradingFee != null" >
+        platform_trading_fee = #{record.platformTradingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalCost != null" >
+        total_cost = #{record.totalCost,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_cost
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      payment_channel = #{record.paymentChannel,jdbcType=VARCHAR},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      order_payment_time = #{record.orderPaymentTime,jdbcType=TIMESTAMP},
+      order_completion_time = #{record.orderCompletionTime,jdbcType=TIMESTAMP},
+      platform_allowance_price = #{record.platformAllowancePrice,jdbcType=DECIMAL},
+      platform_trading_fee = #{record.platformTradingFee,jdbcType=DECIMAL},
+      total_cost = #{record.totalCost,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lea.proj.model.Cost" >
+    update tb_cost
+    <set >
+      <if test="paymentChannel != null" >
+        payment_channel = #{paymentChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPaymentTime != null" >
+        order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCompletionTime != null" >
+        order_completion_time = #{orderCompletionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformAllowancePrice != null" >
+        platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="platformTradingFee != null" >
+        platform_trading_fee = #{platformTradingFee,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCost != null" >
+        total_cost = #{totalCost,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lea.proj.model.Cost" >
+    update tb_cost
+    set payment_channel = #{paymentChannel,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
+      order_completion_time = #{orderCompletionTime,jdbcType=TIMESTAMP},
+      platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      platform_trading_fee = #{platformTradingFee,jdbcType=DECIMAL},
+      total_cost = #{totalCost,jdbcType=DECIMAL}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <insert id="saveOrUpdate" parameterType="com.lea.proj.model.Cost">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(1) from tb_cost where order_id = #{orderId,jdbcType=BIGINT}
+    </selectKey>
+    <if test="count > 0">
+      update tb_cost
+      set payment_channel = #{paymentChannel,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
+      order_completion_time = #{orderCompletionTime,jdbcType=TIMESTAMP},
+      platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      platform_trading_fee = #{platformTradingFee,jdbcType=DECIMAL},
+      total_cost = #{totalCost,jdbcType=DECIMAL}
+      where order_id = #{orderId,jdbcType=BIGINT}
+    </if>
+    <if test="count==0">
+      insert into tb_cost (order_id, payment_channel, shop_name,
+      order_payment_time, order_completion_time,
+      platform_allowance_price, platform_trading_fee,
+      total_cost)
+      values (#{orderId,jdbcType=BIGINT}, #{paymentChannel,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR},
+      #{orderPaymentTime,jdbcType=TIMESTAMP}, #{orderCompletionTime,jdbcType=TIMESTAMP},
+      #{platformAllowancePrice,jdbcType=DECIMAL}, #{platformTradingFee,jdbcType=DECIMAL},
+      #{totalCost,jdbcType=DECIMAL})
+    </if>
+  </insert>
+  <select id="getAllOrderId" resultType="string">
+    select order_id from tb_cost
+  </select>
+  <select id="selectByConditions" parameterType="com.lea.proj.model.common.ConditionVo" resultMap="BaseResultMap">
+    select * from tb_cost
+    <where>
+      <if test="id != null and id != ''">
+        and order_id = #{id}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and order_payment_time <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and order_payment_time <![CDATA[<=]]> #{endTime}
+      </if>
+      <if test="startTime1 != null and startTime1 != ''">
+        and order_completion_time <![CDATA[>=]]> #{startTime1}
+      </if>
+      <if test="endTime1 != null and endTime1 != ''">
+        and order_completion_time <![CDATA[<=]]> #{endTime1}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lea.proj.dao.SettlementMapper" >
+  <resultMap id="BaseResultMap" type="com.lea.proj.model.Settlement" >
+    <constructor >
+      <idArg column="order_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="settlement_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="billing_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="settlement_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="order_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="platform_allowance_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="commission_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, settlement_id, shop_name, order_time, billing_time, settlement_time, order_price, 
+    platform_allowance_price, commission_money
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lea.proj.model.SettlementExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_settlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_settlement
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_settlement
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lea.proj.model.SettlementExample" >
+    delete from tb_settlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lea.proj.model.Settlement" >
+    insert into tb_settlement (order_id, settlement_id, shop_name, 
+      order_time, billing_time, settlement_time, 
+      order_price, platform_allowance_price, commission_money
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{settlementId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{billingTime,jdbcType=TIMESTAMP}, #{settlementTime,jdbcType=TIMESTAMP}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{platformAllowancePrice,jdbcType=DECIMAL}, #{commissionMoney,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lea.proj.model.Settlement" >
+    insert into tb_settlement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="settlementId != null" >
+        settlement_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="orderTime != null" >
+        order_time,
+      </if>
+      <if test="billingTime != null" >
+        billing_time,
+      </if>
+      <if test="settlementTime != null" >
+        settlement_time,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="platformAllowancePrice != null" >
+        platform_allowance_price,
+      </if>
+      <if test="commissionMoney != null" >
+        commission_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="settlementId != null" >
+        #{settlementId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billingTime != null" >
+        #{billingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementTime != null" >
+        #{settlementTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="platformAllowancePrice != null" >
+        #{platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionMoney != null" >
+        #{commissionMoney,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lea.proj.model.SettlementExample" resultType="java.lang.Integer" >
+    select count(*) from tb_settlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_settlement
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.settlementId != null" >
+        settlement_id = #{record.settlementId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderTime != null" >
+        order_time = #{record.orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.billingTime != null" >
+        billing_time = #{record.billingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.settlementTime != null" >
+        settlement_time = #{record.settlementTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.platformAllowancePrice != null" >
+        platform_allowance_price = #{record.platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commissionMoney != null" >
+        commission_money = #{record.commissionMoney,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_settlement
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      settlement_id = #{record.settlementId,jdbcType=BIGINT},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      order_time = #{record.orderTime,jdbcType=TIMESTAMP},
+      billing_time = #{record.billingTime,jdbcType=TIMESTAMP},
+      settlement_time = #{record.settlementTime,jdbcType=TIMESTAMP},
+      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      platform_allowance_price = #{record.platformAllowancePrice,jdbcType=DECIMAL},
+      commission_money = #{record.commissionMoney,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lea.proj.model.Settlement" >
+    update tb_settlement
+    <set >
+      <if test="settlementId != null" >
+        settlement_id = #{settlementId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billingTime != null" >
+        billing_time = #{billingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementTime != null" >
+        settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="platformAllowancePrice != null" >
+        platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionMoney != null" >
+        commission_money = #{commissionMoney,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lea.proj.model.Settlement" >
+    update tb_settlement
+    set settlement_id = #{settlementId,jdbcType=BIGINT},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      billing_time = #{billingTime,jdbcType=TIMESTAMP},
+      settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      commission_money = #{commissionMoney,jdbcType=DECIMAL}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <!--根据主键save或update-->
+  <insert id="saveOrUpdate" parameterType="com.lea.proj.model.Payment">
+    <selectKey keyProperty="count" order="BEFORE" resultType="int">
+      select count(1) from tb_settlement where order_id = #{orderId,jdbcType=BIGINT}
+    </selectKey>
+    <if test="count > 0">
+      update tb_settlement
+      set settlement_id = #{settlementId,jdbcType=BIGINT},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      billing_time = #{billingTime,jdbcType=TIMESTAMP},
+      settlement_time = #{settlementTime,jdbcType=TIMESTAMP},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      platform_allowance_price = #{platformAllowancePrice,jdbcType=DECIMAL},
+      commission_money = #{commissionMoney,jdbcType=DECIMAL}
+      where order_id = #{orderId,jdbcType=BIGINT}
+    </if>
+    <if test="count==0">
+      insert into tb_settlement (order_id, settlement_id, shop_name,
+      order_time, billing_time, settlement_time,
+      order_price, platform_allowance_price, commission_money
+      )
+      values (#{orderId,jdbcType=BIGINT}, #{settlementId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR},
+      #{orderTime,jdbcType=TIMESTAMP}, #{billingTime,jdbcType=TIMESTAMP}, #{settlementTime,jdbcType=TIMESTAMP},
+      #{orderPrice,jdbcType=DECIMAL}, #{platformAllowancePrice,jdbcType=DECIMAL}, #{commissionMoney,jdbcType=DECIMAL}
+      )
+    </if>
+  </insert>
+  <select id="getAllOrderId" resultType="string">
+    select order_id from tb_settlement
+  </select>
+  <select id="getAllSettleId" resultType="string">
+    select distinct settlement_id from tb_settlement
+  </select>
+  <select id="selectByConditions" parameterType="com.lea.proj.model.common.ConditionVo" resultMap="BaseResultMap">
+    select * from tb_settlement
+    <where>
+      <if test="id != null and id != ''">
+        and settlement_id = #{id}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and settlement_time <![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and settlement_time <![CDATA[<=]]> #{endTime}
+      </if>
+    </where>
+    order by settlement_time desc
+  </select>
+</mapper>
