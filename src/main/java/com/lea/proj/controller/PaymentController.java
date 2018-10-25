@@ -36,16 +36,6 @@ public class PaymentController {
     }
 
     /**
-     * 导出
-     * @param response
-     */
-    @RequestMapping(value = "exportExcel")
-    public void exportExcel(HttpServletResponse response) {
-        List<Payment> paymentList = paymentService.getAll();
-        FileUtil.exportExcel(paymentList, null, "支付", Payment.class, "支付列表.xls", true, response);
-    }
-
-    /**
      * 导入
      * @param file
      */
@@ -53,6 +43,17 @@ public class PaymentController {
     public void importExcel(@RequestParam("file") MultipartFile file) {
         List<Payment> paymentList = FileUtil.importExcel(file, 0, 1, Payment.class);
         paymentService.importExcel(paymentList);
+    }
+
+
+    /**
+     * 导出
+     * @param response
+     */
+    @RequestMapping(value = "exportExcel")
+    public void exportExcel(HttpServletResponse response) {
+        List<Payment> paymentList = paymentService.getAll();
+        FileUtil.exportExcel(paymentList, null, "支付", Payment.class, "支付列表.xls", true, response);
     }
 
     /**
