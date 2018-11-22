@@ -1,3 +1,35 @@
+// 导航vm
+var navbarVm = new Vue({
+    el: '#navbar',
+    data: {
+        items: [
+            {
+                title: '支付列表',
+                url: '/payment/'
+            },
+            {
+                title: '退款列表',
+                url: '/refund/'
+            },
+            {
+                title: '费用列表',
+                url: '/cost/'
+            },
+            {
+                title: '结算列表',
+                url: '/settlement/'
+            },
+        ],
+        isActive: 0
+    },
+    methods: {
+        changeList: function (index, url) {
+            this.isActive == index;
+            initBootstrapTable(url, index + 1);
+        }
+    },
+})
+
 // 初始化bootstrapTable
 $('#tb').bootstrapTable({
     url: "/payment/getDataByPage",

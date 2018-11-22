@@ -8,6 +8,8 @@
     <title>LEA</title>
     <!--jquery-->
     <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <!--vue-->
+    <script type="text/javascript" src="vue/vue.js"></script>
     <!--bootstrap-->
     <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
@@ -22,35 +24,16 @@
     <script type="text/javascript" src="jedate/jedate.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default" role="navigation" id="navbar">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">LEA</a>
+                <a class="navbar-brand">LEA</a>
             </div>
             <div>
                 <ul class="nav navbar-nav" id="titleList">
-                    <li class="active">
-                        <a href="#" onclick="initBootstrapTable('/payment/', 1)">支付列表</a>
+                    <li v-for="(item, index) in items" :class="{active: isActive == index}">
+                        <a href="#" @click="changeList(index, item.url)">{{item.title}}</a>
                     </li>
-                    <li>
-                        <a href="#" onclick="initBootstrapTable('/refund/', 2)">退款列表</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="initBootstrapTable('/cost/', 3)">费用列表</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="initBootstrapTable('/settlement/', 4)">结算列表</a>
-                    </li>
-<!--                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            操作
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">导入</a></li>
-                            <li><a href="#">导出</a></li>
-                        </ul>
-                    </li>-->
                 </ul>
             </div>
         </div>
