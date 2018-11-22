@@ -18,4 +18,8 @@ public class ProjApplication {
     private void m() {
 
     }
+    
+    public void dev() {
+        
+    }
 }
