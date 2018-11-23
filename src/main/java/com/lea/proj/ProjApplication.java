@@ -16,7 +16,7 @@ public class ProjApplication {
     }
 
     private void m() {
-        System.out.println("输出");
+        System.out.println("输出111");
     }
     
     public void dev() {
