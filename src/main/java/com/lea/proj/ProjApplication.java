@@ -17,5 +17,6 @@ public class ProjApplication {
     
     public void dev() {
         System.out.println("分支1");
+        System.out.println("分支2");
     }
 }
