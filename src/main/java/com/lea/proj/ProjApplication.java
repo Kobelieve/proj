@@ -14,10 +14,6 @@ public class ProjApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProjApplication.class, args);
     }
-
-    private void m() {
-        System.out.println("输出22221");
-    }
     
     public void dev() {
         
