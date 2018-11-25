@@ -11,6 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.lea.proj.dao")
 public class ProjApplication {
 
+    public void master() {
+        
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(ProjApplication.class, args);
     }
